@@ -1,0 +1,5 @@
+.actiondock/
+node_modules/
+dist/
+bun.lock
+*.db

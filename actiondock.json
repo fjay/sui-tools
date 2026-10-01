@@ -1,0 +1,405 @@
+{
+  "$schema": "https://actiondock.dev/schema/v2.json",
+  "schemaVersion": 2,
+  "id": "team4u.sui",
+  "name": "Sui Tools",
+  "version": "1.0.0",
+  "description": "随手记记账、分类初始化、转账、流水查询与报表 Action Package",
+  "files": [
+    "src",
+    "actions",
+    "playbooks"
+  ],
+  "config": {
+    "SUI_USER": {
+      "type": "string",
+      "description": "随手记登录账号/邮箱"
+    },
+    "SUI_PASSWORD": {
+      "type": "string",
+      "description": "随手记登录密码",
+      "secret": true
+    }
+  },
+  "actions": {
+    "init-tally-info": {
+      "entry": "actions/init-tally-info.ts",
+      "description": "初始化随手记收支两级分类、账户列表与成员信息",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          }
+        },
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "payoutCategories": {
+            "type": "array"
+          },
+          "incomeCategories": {
+            "type": "array"
+          },
+          "accounts": {
+            "type": "array"
+          },
+          "members": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "payoutCategories",
+          "incomeCategories",
+          "accounts",
+          "members"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "init"
+      ]
+    },
+    "payout": {
+      "entry": "actions/payout.ts",
+      "description": "随手记支出记账",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "description": "随手记账户 ID（可通过 init-tally-info 获取）"
+          },
+          "price": {
+            "type": "number",
+            "description": "支出金额"
+          },
+          "category": {
+            "type": "string",
+            "description": "二级分类 ID（可通过 init-tally-info 获取）"
+          },
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          },
+          "payTime": {
+            "type": "string",
+            "description": "记账时间，格式 yyyy-MM-dd HH:mm，默认当前时间"
+          },
+          "member": {
+            "type": "string",
+            "description": "可选，记账成员 ID"
+          },
+          "memo": {
+            "type": "string",
+            "description": "可选，备注信息"
+          },
+          "store": {
+            "type": "string",
+            "description": "可选，商家 ID"
+          },
+          "project": {
+            "type": "string",
+            "description": "可选，项目 ID"
+          }
+        },
+        "required": [
+          "account",
+          "price",
+          "category"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "payout"
+      ]
+    },
+    "income": {
+      "entry": "actions/income.ts",
+      "description": "随手记收入记账",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "description": "随手记账户 ID（可通过 init-tally-info 获取）"
+          },
+          "price": {
+            "type": "number",
+            "description": "收入金额"
+          },
+          "category": {
+            "type": "string",
+            "description": "二级分类 ID（可通过 init-tally-info 获取）"
+          },
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          },
+          "payTime": {
+            "type": "string",
+            "description": "记账时间，格式 yyyy-MM-dd HH:mm，默认当前时间"
+          },
+          "member": {
+            "type": "string",
+            "description": "可选，记账成员 ID"
+          },
+          "memo": {
+            "type": "string",
+            "description": "可选，备注信息"
+          },
+          "store": {
+            "type": "string",
+            "description": "可选，商家 ID"
+          },
+          "project": {
+            "type": "string",
+            "description": "可选，项目 ID"
+          }
+        },
+        "required": [
+          "account",
+          "price",
+          "category"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "income"
+      ]
+    },
+    "transfer": {
+      "entry": "actions/transfer.ts",
+      "description": "随手记转账记账",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "outAccount": {
+            "type": "string",
+            "description": "转出账户 ID（可通过 init-tally-info 获取）"
+          },
+          "inAccount": {
+            "type": "string",
+            "description": "转入账户 ID（可通过 init-tally-info 获取）"
+          },
+          "price": {
+            "type": "number",
+            "description": "转账金额"
+          },
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          },
+          "payTime": {
+            "type": "string",
+            "description": "记账时间，格式 yyyy-MM-dd HH:mm，默认当前时间"
+          },
+          "member": {
+            "type": "string",
+            "description": "可选，成员 ID"
+          },
+          "memo": {
+            "type": "string",
+            "description": "可选，备注信息"
+          }
+        },
+        "required": [
+          "outAccount",
+          "inAccount",
+          "price"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "transfer"
+      ]
+    },
+    "account-detail": {
+      "entry": "actions/account-detail.ts",
+      "description": "查询随手记指定账户或全部账户在日期范围内的交易流水明细",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "可选，随手记查询账户 ID（可通过 init-tally-info 获取）；不传或传 '0' 则查询全账户流水"
+          },
+          "beginDate": {
+            "type": "string",
+            "description": "开始日期，格式例如 2026.01.01"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "结束日期，格式例如 2026.12.31"
+          },
+          "memberIds": {
+            "type": "string",
+            "description": "可选，成员过滤，多个成员 ID 用英文逗号分隔；不传则查全部"
+          },
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          }
+        },
+        "required": [
+          "beginDate",
+          "endDate"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "details": {
+            "type": "array"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "details",
+          "total"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "account-detail"
+      ]
+    },
+    "delete-transaction": {
+      "entry": "actions/delete-transaction.ts",
+      "description": "删除随手记中的一条指定流水记录",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "transId": {
+            "type": "string",
+            "description": "要删除的流水记录 ID（可从 account-detail 结果的 sId 或 tranId 字段获取）"
+          },
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          }
+        },
+        "required": [
+          "transId"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "delete-transaction"
+      ]
+    },
+    "get-report-index": {
+      "entry": "actions/get-report-index.ts",
+      "description": "获取随手记报表首页概览数据",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "description": "可选，切换账本 ID"
+          }
+        },
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "uses": [],
+      "tags": [
+        "sui",
+        "report"
+      ]
+    }
+  },
+  "playbooks": {
+    "manage-expenses": {
+      "entry": "playbooks/manage-expenses.md",
+      "description": "指导 AI Agent 如何查询随手记分类与账户，执行记账（支出/收入/转账）并校验流水",
+      "actions": [
+        "init-tally-info",
+        "payout",
+        "income",
+        "transfer",
+        "account-detail"
+      ]
+    }
+  }
+}
