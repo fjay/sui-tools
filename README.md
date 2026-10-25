@@ -72,6 +72,8 @@ ad config set SUI_PASSWORD "your_password"
 
 ## 💻 命令行使用示例
 
+ActionDock 2.x 推荐使用**扁平化参数赋值**语法：以 `--` 作为控制选项与入参数据的边界，字符串使用 `key="value"`（保留原始文本），数值、布尔或 JSON 结构使用 `key:=value`（严格 JSON 解析）。
+
 ### 1. 初始化并获取分类与账户元数据
 
 ```bash
@@ -87,60 +89,41 @@ ad run init-tally-info
 ### 2. 支出记账 (`payout`)
 
 ```bash
-ad run payout --input '{
-  "account": "1001",
-  "category": "2065791290801",
-  "price": 38.5,
-  "memo": "午餐便当",
-  "payTime": "2026-10-25 12:30"
-}'
+ad run payout -- account="1001" category="2065791290801" price:=38.5 memo="午餐便当" payTime="2026-10-25 12:30"
 ```
 
 ### 3. 收入记账 (`income`)
 
 ```bash
-ad run income --input '{
-  "account": "1001",
-  "category": "1000000000001",
-  "price": 10000,
-  "memo": "10月工资"
-}'
+ad run income -- account="1001" category="1000000000001" price:=10000 memo="10月工资"
 ```
 
 ### 4. 账户间转账 (`transfer`)
 
 ```bash
-ad run transfer --input '{
-  "outAccount": "1001",
-  "inAccount": "1002",
-  "price": 500,
-  "memo": "转账至零钱通"
-}'
+ad run transfer -- outAccount="1001" inAccount="1002" price:=500 memo="转账至零钱通"
 ```
 
 ### 5. 查询流水明细 (`account-detail`)
 
 ```bash
 # 查询 2026 年 10 月全账户流水
-ad run account-detail --input '{
-  "beginDate": "2026.10.01",
-  "endDate": "2026.10.31"
-}'
+ad run account-detail -- beginDate="2026.10.01" endDate="2026.10.31"
 
 # 查询指定账户流水
-ad run account-detail --input '{
-  "accountId": "1001",
-  "beginDate": "2026.10.01",
-  "endDate": "2026.10.31"
-}'
+ad run account-detail -- accountId="1001" beginDate="2026.10.01" endDate="2026.10.31"
 ```
 
 ### 6. 删除单条流水 (`delete-transaction`)
 
 ```bash
-ad run delete-transaction --input '{
-  "transId": "12345678"
-}'
+ad run delete-transaction -- transId="12345678"
+```
+
+### 7. 获取报表概览 (`get-report-index`)
+
+```bash
+ad run get-report-index
 ```
 
 ---
